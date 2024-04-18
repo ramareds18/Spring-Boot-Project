@@ -5,8 +5,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +13,6 @@ import com.example.mobileplaceorder.repositories.OrderItemRepository;
 import com.example.mobileplaceorder.service.dto.OrderItemDto;
 
 @Service
-@Transactional
 public class OrderCartService {
 	
     @Autowired
@@ -63,6 +60,11 @@ public class OrderCartService {
         orderItemRepo.save(this.convertToEntity(existingItem));
     }
 
+    public boolean emptyCart() {
+    	int deletedCount = orderItemRepo.deleteByOrderNumberIsNull();
+        return deletedCount > 0; // Return true if any items were deleted
+    }
+    
     // Helper methods for conversion between entities and DTOs
     private OrderItemDto convertToDto(OrderItem entity) {
         OrderItemDto dto = new OrderItemDto();
