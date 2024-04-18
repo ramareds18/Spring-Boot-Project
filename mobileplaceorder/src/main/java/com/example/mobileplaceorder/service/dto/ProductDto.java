@@ -2,6 +2,7 @@ package com.example.mobileplaceorder.service.dto;
 
 public class ProductDto {
 	
+	private int id;
 	private String name;
 	private String type;
 	private double price;
@@ -9,6 +10,17 @@ public class ProductDto {
 	public ProductDto() {
 		
 	}
+	
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int i) {
+		this.id = i;
+	}
+
 
 	public String getName() {
 		return name;
