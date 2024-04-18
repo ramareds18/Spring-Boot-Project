@@ -75,6 +75,7 @@ public class ProductService {
 
     private ProductDto convertToDto(Product product) {
         ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
         productDto.setName(product.getName());
         productDto.setType(product.getType());
         productDto.setPrice(product.getPrice());
@@ -83,6 +84,7 @@ public class ProductService {
 
     private Product convertToEntity(ProductDto productDto) {
         Product product = new Product();
+        product.setId(productDto.getId());
         product.setName(productDto.getName());
         product.setType(productDto.getType());
         product.setPrice(productDto.getPrice());
