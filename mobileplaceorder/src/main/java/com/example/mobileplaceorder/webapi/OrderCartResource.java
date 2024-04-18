@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,11 @@ public class OrderCartResource {
     
     @PostMapping("/products/cart/{productId}")
     public ResponseEntity<String> addToCart(@PathVariable int productId, @RequestParam int qty) {
+    	
+        if (qty <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid quantity: Quantity must be a positive integer");
+        }
+        
         ProductDto productDto = productService.findById(productId);
         if (productDto != null) {
             // Create a new order item
@@ -52,6 +58,17 @@ public class OrderCartResource {
             return ResponseEntity.status(HttpStatus.CREATED).body("Product added to cart successfully");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
+        }
+    }
+    
+    @DeleteMapping("/cart")
+    public ResponseEntity<String> emptyCart() {
+        boolean itemsDeleted = orderCartService.emptyCart();
+        
+        if (itemsDeleted) {
+            return ResponseEntity.ok("Cart emptied successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No items to delete");
         }
     }
 }
